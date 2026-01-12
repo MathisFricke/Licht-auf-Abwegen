@@ -1,0 +1,84 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm}
+
+\title{\textbf{Licht auf Abwegen -- Teil 2: Warum eigentlich geradeaus?}}
+\author{Ergänzung für Fortgeschrittene}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Einleitung}
+Im ersten Teil haben wir angenommen, dass sich Licht innerhalb eines homogenen Mediums (z.\,B. nur Luft) geradlinig ausbreitet. Aber warum ist das so?
+Wir wissen aus der Physik (Fermatsches Prinzip):
+\begin{quote}
+    \textbf{Licht wählt den Weg, der die wenigste Zeit benötigt.}
+\end{quote}
+In einem homogenen Medium ist die Lichtgeschwindigkeit $v$ konstant. Zeitminimierung bedeutet in diesem Fall also Wegminimierung.
+
+Die mathematische Fragestellung lautet daher:
+\textbf{Welche Kurve $y(x)$ zwischen zwei Punkten $A$ und $B$ hat die kürzeste Länge?}
+
+\section{Von der Zahl zur Funktion: Das Funktional}
+In der klassischen Kurvendiskussion suchen wir einen Wert $x$, der eine Funktion $f(x)$ minimiert. Hier suchen wir jedoch eine \textit{ganze Funktion} $y(x)$, die eine Eigenschaft $L$ (die Bogenlänge) minimiert.
+
+Die Länge $L$ einer Kurve $y(x)$ von $x_1$ bis $x_2$ ist gegeben durch das Integral:
+\begin{equation}
+    L[y] = \int_{x_1}^{x_2} \sqrt{1 + (y'(x))^2} \, dx
+\end{equation}
+Wir nennen $L[y]$ ein \textbf{Funktional}: Es ist eine „Maschine“, die eine Funktion als Eingabe erhält und eine Zahl (die Länge) als Ausgabe liefert.
+
+\section{Die Variation -- Wir „wackeln“ am Weg}
+Wie prüfen wir, ob wir das Minimum gefunden haben?
+\begin{itemize}
+    \item \textbf{Klassisch:} Wir gehen ein Stückchen $\varepsilon$ zur Seite ($x + \varepsilon$). Wenn wir im Minimum sind, darf sich der Funktionswert in erster Näherung nicht ändern (die Ableitung ist 0).
+    \item \textbf{Hier:} Wir verändern die \textit{ganze Kurve} ein bisschen.
+\end{itemize}
+
+Wir nehmen an, die Funktion $y(x)$ sei die optimale Lösung (die Gerade). Nun addieren wir eine beliebige „Störfunktion“ oder „Testfunktion“ $\eta(x)$ (sprich: Eta), die wir mit einem kleinen Faktor $\varepsilon$ skalieren:
+\begin{equation}
+    y_{\text{neu}}(x) = y(x) + \varepsilon \cdot \eta(x)
+\end{equation}
+\textbf{Wichtig:} Damit Start- und Zielpunkt gleich bleiben, darf die Störung an den Rändern keine Auswirkung haben. Es muss also gelten:
+\[ 
+    \eta(x_1) = 0 \quad \text{und} \quad \eta(x_2) = 0 
+\]
+
+\section{Die Fréchet-Ableitung: Linearität im Funktionenraum}
+Um das Konzept der Ableitung auf Funktionale zu übertragen, betrachten wir die lokale Änderung.
+Bei einer gewöhnlichen Funktion $f: \mathbb{R} \to \mathbb{R}$ beschreibt die Ableitung $A = f'(x)$ die lineare Änderung in der Nähe von $x$:
+\[ f(x + h) \approx f(x) + A \cdot h \]
+Analog suchen wir für unser Funktional $L$ einen linearen Operator $A$, die sogenannte \textbf{Fréchet-Ableitung} (oft bezeichnet als erste Variation $\delta L$), sodass gilt:
+\[ L[y + \eta] \approx L[y] + \delta L[y](\eta) \]
+Hierbei spielt die Störung $\eta$ die Rolle des kleinen Schrittes $h$. Der Term $\delta L[y](\eta)$ sagt uns, wie stark sich die Länge ändert, wenn wir den Pfad in die spezifische Richtung $\eta$ „ausbeulen“.
+
+\subsection*{Berechnung als Richtungsableitung}
+In der Praxis berechnen wir diese Ableitung, indem wir die Änderung entlang einer festen „Richtung“ $\eta$ betrachten. Wir führen den Parameter $\varepsilon$ ein und definieren eine Hilfsfunktion $L(\varepsilon)$, die nur noch von einer Zahl abhängt:
+\[ L(\varepsilon) := L[y + \varepsilon \eta] \]
+Wenn $y(x)$ der kürzeste Weg ist, muss für \textit{jede beliebige} erlaubte Störung $\eta(x)$ gelten, dass die Länge bei $\varepsilon=0$ minimal ist. Die notwendige Bedingung ist also:
+\begin{equation}
+    \left. \frac{d}{d\varepsilon} L[y + \varepsilon \eta] \right|_{\varepsilon=0} = 0 \quad \text{für alle } \eta.
+\end{equation}
+Diese Ableitung nach dem Parameter $\varepsilon$ entspricht der Gâteaux-Ableitung (Richtungsableitung). In der Physik führt das Auswerten dieser Gleichung (via partieller Integration) direkt auf die Euler-Lagrange-Gleichungen und damit auf $y''(x)=0$ (die Gerade).
+
+\section{Visualisierung der Variation}
+Die folgende Abbildung veranschaulicht das Prinzip: Wir starten mit der Geraden (schwarz) und addieren eine Störung $\varepsilon \cdot \sin(x)$ (gestrichelt).
+Das rechte Diagramm zeigt die Länge des Pfades in Abhängigkeit von der Stärke $\varepsilon$ der Störung. Man erkennt deutlich, dass jede Abweichung ($\varepsilon \neq 0$) den Weg verlängert und das Minimum genau bei der Geraden ($\varepsilon = 0$) liegt.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{variation_demo.pdf}
+    \caption{Links: Variation des optimalen Pfades (Gerade) durch eine Sinus-Störung. Rechts: Die Länge des Pfades $L(\epsilon)$ ist minimal bei $\epsilon=0$. Dort verschwindet die Steigung (Fréchet-Ableitung).}
+    \label{fig:variation}
+\end{figure}
+
+\end{document}
